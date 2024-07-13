@@ -23,10 +23,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\Cinema.DataAccess\Cinema.DataAccess.csproj" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <Folder Include="Controllers\" />
+    <ProjectReference Include="..\Cinema.DTOs\Cinema.DTOs.csproj" />
   </ItemGroup>
 
 </Project>
