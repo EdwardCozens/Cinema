@@ -88,7 +88,7 @@ public class MoviesController : ControllerBase
         var movie = await context.Movies.Where(m => m.Id == movieDTO.Id).FirstOrDefaultAsync();
         if (movie != null)
         {
-            movie.Name = movieDTO.Name;
+            movie.Title = movieDTO.Title;
             movie.Description = movieDTO.Description;
             movie.ReleaseDate = movieDTO.ReleaseDate;
             movie.Duration = movieDTO.Duration;
