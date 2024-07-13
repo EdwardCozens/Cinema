@@ -28,6 +28,22 @@ public class MoviesController : ControllerBase
         return await movies.ToArrayAsync();
     }
 
+    [HttpGet("{movieId}", Name = "Get_Movie")]
+    public async Task<ActionResult<MovieDTO>> GetById(int? movieId)
+    {
+        var movie = context.Movies.Where(m => m.Id == movieId).FirstOrDefault();
+        MovieDTO movieDTO;
+        if (movie == null) {
+            movieDTO = new MovieDTO();
+        }
+        else
+        {
+            movieDTO = mapper.Map<MovieDTO>(movie);
+        }
+
+        return movieDTO;
+    }
+
     [HttpPost(Name = "Post_Movie")]
     public async Task<ActionResult<MovieDTO>> Post(
         [FromBody] MovieDTO movieDTO)
@@ -38,7 +54,7 @@ public class MoviesController : ControllerBase
         //{
         try
         {
-            var movie = mapper.Map<MovieDTO, Movie>(movieDTO);
+            var movie = mapper.Map<Movie>(movieDTO);
             context.Movies.Add(movie);
             await context.SaveChangesAsync();
             return Ok(movie);
