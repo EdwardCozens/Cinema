@@ -36,7 +36,7 @@
                         <td>@movie.Description</td>
                         <td>@movie.ReleaseDate</td>
                         <td>
-                            <a asp-controller="Movie" asp-action="Upsert" asp-route-id="@movie.Id" class="btn bg-primary">Edit</a>
+                            <a asp-controller="Movie" asp-action="Edit" asp-route-id="@movie.Id" class="btn bg-primary">Edit</a>
                             <a href="/movie/delete/@movie.Id" class="btn bg-danger">Delete</a>
                         </td>
                     </tr>

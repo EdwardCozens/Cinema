@@ -33,7 +33,8 @@ public class MoviesController : ControllerBase
     {
         var movie = await context.Movies.Where(m => m.Id == movieId).FirstOrDefaultAsync();
         MovieDTO movieDTO;
-        if (movie == null) {
+        if (movie == null)
+        {
             movieDTO = new MovieDTO();
         }
         else
@@ -59,7 +60,8 @@ public class MoviesController : ControllerBase
             await context.SaveChangesAsync();
             return Ok(movie);
         }
-        catch (Exception ex) {
+        catch (Exception ex)
+        {
             var x = ex;
         }
         //}
@@ -73,6 +75,24 @@ public class MoviesController : ControllerBase
         if (movie != null)
         {
             context.Movies.Remove(movie);
+            await context.SaveChangesAsync();
+            return Ok();
+        }
+        return BadRequest();
+    }
+
+    [HttpPut(Name = "Put_Movie")]
+    public async Task<ActionResult<MovieDTO>> Put(
+        [FromBody] MovieDTO movieDTO)
+    {
+        var movie = await context.Movies.Where(m => m.Id == movieDTO.Id).FirstOrDefaultAsync();
+        if (movie != null)
+        {
+            movie.Name = movieDTO.Name;
+            movie.Description = movieDTO.Description;
+            movie.ReleaseDate = movieDTO.ReleaseDate;
+            movie.Duration = movieDTO.Duration;
+            context.Movies.Update(movie);
             await context.SaveChangesAsync();
             return Ok();
         }

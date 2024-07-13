@@ -66,4 +66,30 @@ public class MovieController : Controller
         var response = await httpClient.DeleteAsync($"https://localhost:7150/api/Movies/{id}");
         return RedirectToAction("Index");
     }
+
+    public async Task<IActionResult> Edit(int? id)
+    {
+        if (id == null || id == 0)
+        {
+            return NotFound();
+        }
+        var httpClient = factory.CreateClient();
+        var response = await httpClient.GetAsync($"https://localhost:7150/api/Movies/{id}");
+        var json = await response.Content.ReadAsStringAsync();
+        var movie = JsonSerializer.Deserialize<MovieDTO>(json, new JsonSerializerOptions { PropertyNameCaseInsensitive = true });
+        return View(movie);
+    }
+
+    [HttpPost]
+    public async Task<IActionResult> Edit(MovieDTO movie)
+    {
+        if (ModelState.IsValid)
+        {
+            var httpClient = factory.CreateClient();
+            var response = await httpClient.PutAsJsonAsync("https://localhost:7150/api/Movies", movie);
+            response.EnsureSuccessStatusCode();
+            return RedirectToAction("Index");
+        }
+        return View();
+    }
 }
