@@ -23,13 +23,6 @@ namespace Cinema.Web.Controllers
             return View(movies);
         }
 
-        public async Task<IActionResult> Upsert(int? id)
-        {
-            var httpClient = factory.CreateClient();
-
-            return View();
-        }
-
         public async Task<IActionResult> Create()
         {
             var httpClient = factory.CreateClient();

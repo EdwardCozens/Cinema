@@ -1,4 +1,5 @@
-﻿using Cinema.DataAccess.Data;
+﻿using AutoMapper;
+using Cinema.DataAccess.Data;
 using Cinema.DataAccess.Models;
 using Cinema.DTOs;
 using Microsoft.AspNetCore.Mvc;
@@ -11,10 +12,12 @@ namespace Cinema.API.Controllers;
 public class MoviesController : ControllerBase
 {
     private readonly ApplicationDbContext context;
+    private readonly IMapper mapper;
 
-    public MoviesController(ApplicationDbContext context)
+    public MoviesController(ApplicationDbContext context, IMapper mapper)
     {
         this.context = context;
+        this.mapper = mapper;
     }
 
     [HttpGet(Name = "Get_Movies")]
@@ -29,19 +32,21 @@ public class MoviesController : ControllerBase
     public async Task<ActionResult<MovieDTO>> Post(
         [FromBody] MovieDTO movieDTO)
     {
-        var movie = context.Movies.Where(m => m.Name == movieDTO.Name).FirstOrDefault();
+        //  var movie = context.Movies.Where(m => m.Name == movieDTO.Name).FirstOrDefault();
 
-        if (movie == null)
+        //if (movie == null)
+        //{
+        try
         {
-            movie = new Movie();
-            movie.Name = movieDTO.Name;
-            movie.Description = movieDTO.Description;
-            movie.ReleaseDate = movieDTO.ReleaseDate;
-            movie.Duration = movieDTO.Duration;
+            var movie = mapper.Map<MovieDTO, Movie>(movieDTO);
             context.Movies.Add(movie);
-            context.SaveChanges();
+            await context.SaveChangesAsync();
             return Ok(movie);
         }
+        catch (Exception ex) {
+            var x = ex;
+        }
+        //}
         return BadRequest(StatusCodes.Status405MethodNotAllowed);
     }
 }

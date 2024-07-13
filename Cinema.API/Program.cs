@@ -15,6 +15,8 @@ builder.Services.AddDbContext<ApplicationDbContext>(options =>
         builder.Configuration.GetConnectionString("DefaultConnection"))
     );
 
+builder.Services.AddAutoMapper(typeof(Cinema.DTOs.Mapper.MappingProfile));
+
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
