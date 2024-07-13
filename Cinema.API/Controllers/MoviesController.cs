@@ -31,7 +31,7 @@ public class MoviesController : ControllerBase
     [HttpGet("{movieId}", Name = "Get_Movie")]
     public async Task<ActionResult<MovieDTO>> GetById(int? movieId)
     {
-        var movie = context.Movies.Where(m => m.Id == movieId).FirstOrDefault();
+        var movie = await context.Movies.Where(m => m.Id == movieId).FirstOrDefaultAsync();
         MovieDTO movieDTO;
         if (movie == null) {
             movieDTO = new MovieDTO();
@@ -64,5 +64,18 @@ public class MoviesController : ControllerBase
         }
         //}
         return BadRequest(StatusCodes.Status405MethodNotAllowed);
+    }
+
+    [HttpDelete("{movieId}", Name = "Delete_Movie")]
+    public async Task<ActionResult> Delete(int? movieId)
+    {
+        var movie = await context.Movies.Where(m => m.Id == movieId).FirstOrDefaultAsync();
+        if (movie != null)
+        {
+            context.Movies.Remove(movie);
+            await context.SaveChangesAsync();
+            return Ok();
+        }
+        return BadRequest();
     }
 }

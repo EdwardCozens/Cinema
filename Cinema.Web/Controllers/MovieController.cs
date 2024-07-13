@@ -15,7 +15,6 @@ public class MovieController : Controller
     public async Task<IActionResult> Index()
     {
         var httpClient = factory.CreateClient();
-        // httpClient.BaseAddress = new Uri("https://localhost:7150/api/Movies");
         var response = await httpClient.GetAsync("https://localhost:7150/api/Movies");
         response.EnsureSuccessStatusCode();
         var json = await response.Content.ReadAsStringAsync();
@@ -43,12 +42,28 @@ public class MovieController : Controller
         return View();
     }
 
-    public IActionResult Delete(int? id)
+    public async Task<IActionResult> Delete(int? id)
     {
         if (id == null || id == 0)
         {
             return NotFound();
         }
+        var httpClient = factory.CreateClient();
+        var response = await httpClient.GetAsync($"https://localhost:7150/api/Movies/{id}");
+        var json = await response.Content.ReadAsStringAsync();
+        var movie = JsonSerializer.Deserialize<MovieDTO>(json, new JsonSerializerOptions { PropertyNameCaseInsensitive = true });
+        return View(movie);
+    }
+
+    [HttpPost, ActionName("Delete")]
+    public async Task<IActionResult> DeletePost(int? id)
+    {
+        if (id == null || id == 0)
+        {
+            return NotFound();
+        }
+        var httpClient = factory.CreateClient();
+        var response = await httpClient.DeleteAsync($"https://localhost:7150/api/Movies/{id}");
         return RedirectToAction("Index");
     }
 }
