@@ -13,8 +13,8 @@ namespace Cinema.DataAccess.Models
 
         public int Duration { get; set; }
 
-        public int CategoryId { get; set; }
+        public int GenreId { get; set; }
 
-        public Category Category { get; set; } = null!;
+        public Genre Genre { get; set; } = null!;
     }
 }

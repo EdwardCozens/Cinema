@@ -21,11 +21,13 @@ public class MoviesController : ControllerBase
     }
 
     [HttpGet(Name = "Get_Movies")]
-    public async Task<ActionResult<Movie[]>> Get()
+    public async Task<ActionResult<MovieDTO[]>> Get()
     {
-        var movies = context.Movies;
+        var movies = await context.Movies.ToArrayAsync();
 
-        return await movies.ToArrayAsync();
+        var movieDTOs = mapper.Map<MovieDTO[]>(movies);
+
+        return movieDTOs;
     }
 
     [HttpGet("{movieId}", Name = "Get_Movie")]
