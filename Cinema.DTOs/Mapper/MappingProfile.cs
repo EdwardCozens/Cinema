@@ -8,6 +8,7 @@ namespace Cinema.DTOs.Mapper
         public MappingProfile()
         {
             CreateMap<Movie, MovieDTO>().ReverseMap();
+            CreateMap<Movie, MovieGetDTO>().ReverseMap();
             CreateMap<Genre, GenreDTO>().ReverseMap();
             CreateMap<Genre, GenrePostDTO>().ReverseMap();
         }

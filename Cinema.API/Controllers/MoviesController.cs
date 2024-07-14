@@ -21,30 +21,27 @@ public class MoviesController : ControllerBase
     }
 
     [HttpGet(Name = "Get_Movies")]
-    public async Task<ActionResult<MovieDTO[]>> Get()
+    public async Task<ActionResult<MovieGetDTO[]>> Get()
     {
-        var movies = await context.Movies.ToArrayAsync();
+        var movies = await context.Movies.Include(m => m.Genre).ToArrayAsync();
 
-        var movieDTOs = mapper.Map<MovieDTO[]>(movies);
+        var movieDTOs = mapper.Map<MovieGetDTO[]>(movies);
 
         return movieDTOs;
     }
 
     [HttpGet("{movieId}", Name = "Get_Movie")]
-    public async Task<ActionResult<MovieDTO>> GetById(int? movieId)
+    public async Task<ActionResult<MovieGetDTO>> GetById(int? movieId)
     {
-        var movie = await context.Movies.Where(m => m.Id == movieId).FirstOrDefaultAsync();
-        MovieDTO movieDTO;
-        if (movie == null)
+        var movie = await context.Movies.Include(m => m.Genre).Where(m => m.Id == movieId).FirstOrDefaultAsync();
+        MovieGetDTO movieDTO;
+        if (movie != null)
         {
-            movieDTO = new MovieDTO();
-        }
-        else
-        {
-            movieDTO = mapper.Map<MovieDTO>(movie);
+            movieDTO = mapper.Map<MovieGetDTO>(movie);
+            return Ok(movieDTO);
         }
 
-        return movieDTO;
+        return NotFound();
     }
 
     [HttpPost(Name = "Post_Movie")]
@@ -94,6 +91,7 @@ public class MoviesController : ControllerBase
             movie.Description = movieDTO.Description;
             movie.ReleaseDate = movieDTO.ReleaseDate;
             movie.Duration = movieDTO.Duration;
+            movie.GenreId = movieDTO.GenreId;
             context.Movies.Update(movie);
             await context.SaveChangesAsync();
             return Ok();

@@ -1,4 +1,4 @@
-﻿@model MovieDTO
+﻿@model MovieVM
 
 <div class="card shadow border-0 mt-4">
     <div class="card-header bg-secondary bg-gradient ml-0 py-3">
@@ -13,20 +13,26 @@
             <div class="border p-3">
                 @*<div asp-validation-summary="ModelOnly"></div>*@
                 <div class="form-floating py-2 col-12">
-                    <input asp-for="Title" disabled class="form-control border-0 shadow" />
-                    <label asp-for="Title" class="ms-2"></label>
+                    <input asp-for="@Model.Movie.Title" disabled class="form-control border-0 shadow" />
+                    <label asp-for="@Model.Movie.Title" class="ms-2"></label>
                 </div>
                 <div class="form-floating py-2 col-12">
-                    <input asp-for="Duration" disabled class="form-control border-0 shadow" />
-                    <label asp-for="Duration" class="ms-2"></label>
+                    <input asp-for="@Model.Movie.Duration" disabled class="form-control border-0 shadow" />
+                    <label asp-for="@Model.Movie.Duration" class="ms-2"></label>
                 </div>
                 <div class="form-floating py-2 col-12">
-                    <input asp-for="Description" disabled class="form-control border-0 shadow" />
-                    <label asp-for="Description" class="ms-2"></label>
+                    <input asp-for="@Model.Movie.Description" disabled class="form-control border-0 shadow" />
+                    <label asp-for="@Model.Movie.Description" class="ms-2"></label>
                 </div>
                 <div class="form-floating py-2 col-12">
-                    <input asp-for="ReleaseDate" disabled class="form-control border-0 shadow" />
-                    <label asp-for="ReleaseDate" class="ms-2"></label>
+                    <input asp-for="@Model.Movie.ReleaseDate" disabled class="form-control border-0 shadow" />
+                    <label asp-for="@Model.Movie.ReleaseDate" class="ms-2"></label>
+                </div>
+                <div class="form-floating py-2 col-12">
+                    <select asp-for="@Model.Movie.GenreId" asp-items="@Model.Genres" disabled class="form-control border-0 shadow">
+                    </select>
+                    <label asp-for="@Model.Movie.GenreId" class="ms-2"></label>
+                    <span asp-validation-for="@Model.Movie.GenreId" class="text-danger"></span>
                 </div>
 
                 <div class="row pt-2">

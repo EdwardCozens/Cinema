@@ -20,7 +20,7 @@ public class MovieController : Controller
         var response = await httpClient.GetAsync("https://localhost:7150/api/Movies");
         response.EnsureSuccessStatusCode();
         var json = await response.Content.ReadAsStringAsync();
-        var movies = JsonSerializer.Deserialize<List<MovieDTO>>(json, new JsonSerializerOptions { PropertyNameCaseInsensitive = true });
+        var movies = JsonSerializer.Deserialize<List<MovieGetDTO>>(json, new JsonSerializerOptions { PropertyNameCaseInsensitive = true });
         return View(movies);
     }
 
@@ -68,7 +68,23 @@ public class MovieController : Controller
         var response = await httpClient.GetAsync($"https://localhost:7150/api/Movies/{id}");
         var json = await response.Content.ReadAsStringAsync();
         var movie = JsonSerializer.Deserialize<MovieDTO>(json, new JsonSerializerOptions { PropertyNameCaseInsensitive = true });
-        return View(movie);
+
+        response = await httpClient.GetAsync("https://localhost:7150/api/Genres");
+        response.EnsureSuccessStatusCode();
+        json = await response.Content.ReadAsStringAsync();
+        var genres = JsonSerializer.Deserialize<List<GenreDTO>>(json, new JsonSerializerOptions { PropertyNameCaseInsensitive = true });
+        IEnumerable<SelectListItem> genreList = genres.Select(g => new SelectListItem
+        {
+            Text = g.Name,
+            Value = g.Id.ToString()
+        });
+
+        var movieVM = new MovieVM
+        {
+            Movie = movie,
+            Genres = genreList
+        };
+        return View(movieVM);
     }
 
     [HttpPost, ActionName("Delete")]
@@ -93,19 +109,35 @@ public class MovieController : Controller
         var response = await httpClient.GetAsync($"https://localhost:7150/api/Movies/{id}");
         var json = await response.Content.ReadAsStringAsync();
         var movie = JsonSerializer.Deserialize<MovieDTO>(json, new JsonSerializerOptions { PropertyNameCaseInsensitive = true });
-        return View(movie);
+
+        response = await httpClient.GetAsync("https://localhost:7150/api/Genres");
+        response.EnsureSuccessStatusCode();
+        json = await response.Content.ReadAsStringAsync();
+        var genres = JsonSerializer.Deserialize<List<GenreDTO>>(json, new JsonSerializerOptions { PropertyNameCaseInsensitive = true });
+        IEnumerable<SelectListItem> genreList = genres.Select(g => new SelectListItem
+        {
+            Text = g.Name,
+            Value = g.Id.ToString()
+        });
+
+        var movieVM = new MovieVM
+        {
+            Movie = movie,
+            Genres = genreList
+        };
+        return View(movieVM);
     }
 
     [HttpPost]
-    public async Task<IActionResult> Edit(MovieDTO movie)
+    public async Task<IActionResult> Edit(MovieVM movieVM)
     {
         if (ModelState.IsValid)
         {
             var httpClient = factory.CreateClient();
-            var response = await httpClient.PutAsJsonAsync("https://localhost:7150/api/Movies", movie);
+            var response = await httpClient.PutAsJsonAsync("https://localhost:7150/api/Movies", movieVM.Movie);
             response.EnsureSuccessStatusCode();
             return RedirectToAction("Index");
         }
-        return View();
+        return View(movieVM);
     }
 }

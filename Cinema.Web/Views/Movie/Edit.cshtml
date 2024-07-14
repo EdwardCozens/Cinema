@@ -1,36 +1,43 @@
-﻿@model MovieDTO
+﻿@model MovieVM
 
 <div class="card shadow border-0 mt-4">
     <div class="card-header bg-secondary bg-gradient ml-0 py-3">
         <div class="row">
             <div class="col-12 text-center">
-                <h2 class="text-white py-2">Create Movie</h2>
+                <h2 class="text-white py-2">Edit Movie</h2>
             </div>
         </div>
     </div>
     <div class="card-body p-4">
         <form method="post" class="row">
             <div class="border p-3">
+                <input type="hidden" asp-for="@Model.Movie.Id" />
                 @*<div asp-validation-summary="ModelOnly"></div>*@
                 <div class="form-floating py-2 col-12">
-                    <input asp-for="Title" class="form-control border-0 shadow" />
-                    <label asp-for="Title" class="ms-2"></label>
-                    <span asp-validation-for="Title" class="text-danger"></span>
+                    <input asp-for="@Model.Movie.Title" class="form-control border-0 shadow" />
+                    <label asp-for="@Model.Movie.Title" class="ms-2"></label>
+                    <span asp-validation-for="@Model.Movie.Title" class="text-danger"></span>
                 </div>
                 <div class="form-floating py-2 col-12">
-                    <input asp-for="Duration" class="form-control border-0 shadow" />
-                    <label asp-for="Duration" class="ms-2"></label>
-                    <span asp-validation-for="Duration" class="text-danger"></span>
+                    <input asp-for="@Model.Movie.Duration" class="form-control border-0 shadow" />
+                    <label asp-for="@Model.Movie.Duration" class="ms-2"></label>
+                    <span asp-validation-for="@Model.Movie.Duration" class="text-danger"></span>
                 </div>
                 <div class="form-floating py-2 col-12">
-                    <input asp-for="Description" class="form-control border-0 shadow" />
-                    <label asp-for="Description" class="ms-2"></label>
-                    <span asp-validation-for="Description" class="text-danger"></span>
+                    <input asp-for="@Model.Movie.Description" class="form-control border-0 shadow" />
+                    <label asp-for="@Model.Movie.Description" class="ms-2"></label>
+                    <span asp-validation-for="@Model.Movie.Description" class="text-danger"></span>
                 </div>
                 <div class="form-floating py-2 col-12">
-                    <input asp-for="ReleaseDate" class="form-control border-0 shadow" />
-                    <label asp-for="ReleaseDate" class="ms-2"></label>
-                    <span asp-validation-for="ReleaseDate" class="text-danger"></span>
+                    <input asp-for="@Model.Movie.ReleaseDate" class="form-control border-0 shadow" />
+                    <label asp-for="@Model.Movie.ReleaseDate" class="ms-2"></label>
+                    <span asp-validation-for="@Model.Movie.ReleaseDate" class="text-danger"></span>
+                </div>
+                <div class="form-floating py-2 col-12">
+                    <select asp-for="@Model.Movie.GenreId" asp-items="@Model.Genres" class="form-control border-0 shadow">
+                    </select>
+                    <label asp-for="@Model.Movie.GenreId" class="ms-2"></label>
+                    <span asp-validation-for="@Model.Movie.GenreId" class="text-danger"></span>
                 </div>
 
                 <div class="row pt-2">

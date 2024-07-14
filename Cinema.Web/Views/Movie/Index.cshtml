@@ -1,4 +1,4 @@
-﻿@model List<MovieDTO>
+﻿@model List<MovieGetDTO>
 
 <div class="card shadow border-0 mt-4">
     <div class="card-header bg-secondary bg-gradient ml-0 py-3">
@@ -36,8 +36,7 @@
                         <td>@movie.Duration</td>
                         <td>@movie.Description</td>
                         <td>@movie.ReleaseDate</td>
-                        <td>
-                        </td>
+                        <td>@movie.GenreName</td>
                         <td>
                             <a asp-controller="Movie" asp-action="Edit" asp-route-id="@movie.Id" class="btn bg-primary">Edit</a>
                             <a href="/movie/delete/@movie.Id" class="btn bg-danger">Delete</a>
