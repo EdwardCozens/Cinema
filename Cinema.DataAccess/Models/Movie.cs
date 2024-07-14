@@ -16,5 +16,7 @@ namespace Cinema.DataAccess.Models
         public int GenreId { get; set; }
 
         public Genre Genre { get; set; } = null!;
+
+        public ICollection<Show> Shows { get; set; } = new List<Show>();
     }
 }
