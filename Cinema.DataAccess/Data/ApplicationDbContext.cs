@@ -13,11 +13,15 @@ namespace Cinema.DataAccess.Data
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
-            base.OnModelCreating(modelBuilder);
-
-            // TODO: custom code here
+            modelBuilder.Entity<Category>()
+                .HasMany(e => e.Movies)
+                .WithOne(e => e.Category)
+                .HasForeignKey(e => e.CategoryId)
+                .IsRequired();
         }
 
         public DbSet<Movie> Movies { get; set; }
+
+        public DbSet<Category> Categories { get; set; }
     }
 }

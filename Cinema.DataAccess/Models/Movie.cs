@@ -12,5 +12,9 @@ namespace Cinema.DataAccess.Models
         public DateOnly ReleaseDate { get; set; }
 
         public int Duration { get; set; }
+
+        public int CategoryId { get; set; }
+
+        public Category Category { get; set; } = null!;
     }
 }
