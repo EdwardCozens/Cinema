@@ -1,6 +1,8 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Cinema.DTOs;
 using System.Text.Json;
+using Cinema.DTOs.ViewModels;
+using Microsoft.AspNetCore.Mvc.Rendering;
 
 namespace Cinema.Web.Controllers;
 
@@ -22,19 +24,33 @@ public class MovieController : Controller
         return View(movies);
     }
 
-    public IActionResult Create()
+    public async Task<IActionResult> Create()
     {
-        return View();
+        var httpClient = factory.CreateClient();
+        var response = await httpClient.GetAsync("https://localhost:7150/api/Genres");
+        response.EnsureSuccessStatusCode();
+        var json = await response.Content.ReadAsStringAsync();
+        var genres = JsonSerializer.Deserialize<List<GenreDTO>>(json, new JsonSerializerOptions { PropertyNameCaseInsensitive = true });
+        IEnumerable<SelectListItem> genreList = genres.Select(g => new SelectListItem
+        {
+            Text = g.Name,
+            Value = g.Id.ToString()
+        });
+        var movieVM = new MovieVM
+        {
+            Genres = genreList
+        };
+        return View(movieVM);
     }
 
     [HttpPost]
-    public async Task<IActionResult> Create(MovieDTO movie)
+    public async Task<IActionResult> Create(MovieVM movieVM)
     {
 
         if (ModelState.IsValid)
         {
             var httpClient = factory.CreateClient();
-            var response = await httpClient.PostAsJsonAsync("https://localhost:7150/api/Movies", movie);
+            var response = await httpClient.PostAsJsonAsync("https://localhost:7150/api/Movies", movieVM.Movie);
             response.EnsureSuccessStatusCode();
             return RedirectToAction("Index");
         }

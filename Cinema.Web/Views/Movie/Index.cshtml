@@ -25,6 +25,7 @@
                 <th scope="col">Duration</th>
                 <th scope="col">Genre</th>
                 <th scope="col">Relesae Date</th>
+                <th scope="col">Genre</th>
                 <th scope="col"></th>
             </tr>
             <tbody>
@@ -35,6 +36,8 @@
                         <td>@movie.Duration</td>
                         <td>@movie.Description</td>
                         <td>@movie.ReleaseDate</td>
+                        <td>
+                        </td>
                         <td>
                             <a asp-controller="Movie" asp-action="Edit" asp-route-id="@movie.Id" class="btn bg-primary">Edit</a>
                             <a href="/movie/delete/@movie.Id" class="btn bg-danger">Delete</a>

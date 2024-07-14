@@ -12,5 +12,6 @@ namespace Cinema.DTOs
         public DateOnly ReleaseDate { get; set; }
 
         public int Duration { get; set; }
+        public int GenreId { get; set; }
     }
 }
