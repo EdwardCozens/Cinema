@@ -48,22 +48,15 @@ public class MoviesController : ControllerBase
     public async Task<ActionResult<MovieDTO>> Post(
         [FromBody] MovieDTO movieDTO)
     {
-        //  var movie = context.Movies.Where(m => m.Name == movieDTO.Name).FirstOrDefault();
+        var movie = context.Movies.Where(m => m.Title == movieDTO.Title).FirstOrDefault();
 
-        //if (movie == null)
-        //{
-        try
+        if (movie == null)
         {
-            var movie = mapper.Map<Movie>(movieDTO);
-            context.Movies.Add(movie);
+            var newMovie = mapper.Map<Movie>(movieDTO);
+            context.Movies.Add(newMovie);
             await context.SaveChangesAsync();
-            return Ok(movie);
+            return Ok(newMovie);
         }
-        catch (Exception ex)
-        {
-            var x = ex;
-        }
-        //}
         return BadRequest(StatusCodes.Status405MethodNotAllowed);
     }
 

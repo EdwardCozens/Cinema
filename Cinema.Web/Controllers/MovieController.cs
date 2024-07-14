@@ -47,15 +47,20 @@ public class MovieController : Controller
     public async Task<IActionResult> Create(MovieVM movieVM)
     {
 
-        if (ModelState.IsValid)
+        if (!ModelState.IsValid)
         {
-            var httpClient = factory.CreateClient();
-            var response = await httpClient.PostAsJsonAsync("https://localhost:7150/api/Movies", movieVM.Movie);
-            response.EnsureSuccessStatusCode();
+            return View();
+        }
+
+        var httpClient = factory.CreateClient();
+        var response = await httpClient.PostAsJsonAsync("https://localhost:7150/api/Movies", movieVM.Movie);
+
+        if (response.IsSuccessStatusCode)
+        {
             return RedirectToAction("Index");
         }
 
-        return View();
+        return RedirectToAction("Error", "Home");
     }
 
     public async Task<IActionResult> Delete(int? id)
